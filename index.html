@@ -5,32 +5,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>행운의 숫자 5개</title>
   <style>
+    :root {
+      --bg-gradient-1: #f8fafc;
+      --bg-gradient-2: #e2e8f0;
+      --card-bg: white;
+      --card-shadow: rgba(0,0,0,0.12);
+      --text-primary: #1e293b;
+      --text-secondary: #475569;
+      --button-bg: #0f172a;
+      --button-hover: rgba(0,0,0,0.08);
+      --ball-shadow: rgba(37,99,235,0.25);
+    }
+
+    html.dark-mode {
+      --bg-gradient-1: #0f172a;
+      --bg-gradient-2: #1e293b;
+      --card-bg: #1e293b;
+      --card-shadow: rgba(0,0,0,0.5);
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --button-bg: #f1f5f9;
+      --button-hover: rgba(255,255,255,0.1);
+      --ball-shadow: rgba(37,99,235,0.4);
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+      background: linear-gradient(135deg, var(--bg-gradient-1), var(--bg-gradient-2));
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s ease;
+      color: var(--text-primary);
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      border: none;
+      background: var(--button-bg);
+      color: var(--text-primary);
+      padding: 10px 15px;
+      font-size: 1rem;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: all 0.3s ease;
     }
+
+    .theme-toggle:hover {
+      background: var(--button-bg);
+      opacity: 0.8;
+    }
+
     .card {
-      background: white;
+      background: var(--card-bg);
       padding: 32px;
       border-radius: 20px;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+      box-shadow: 0 12px 30px var(--card-shadow);
       text-align: center;
       width: min(90vw, 560px);
+      transition: all 0.3s ease;
     }
+
     h1 {
       margin-top: 0;
       margin-bottom: 12px;
       font-size: 2rem;
+      color: var(--text-primary);
     }
+
     p {
-      color: #475569;
+      color: var(--text-secondary);
       margin-bottom: 24px;
     }
+
     .numbers {
       display: flex;
       gap: 12px;
@@ -38,6 +95,7 @@
       flex-wrap: wrap;
       margin-bottom: 24px;
     }
+
     .ball {
       width: 64px;
       height: 64px;
@@ -49,31 +107,77 @@
       font-weight: bold;
       background: #2563eb;
       color: white;
-      box-shadow: 0 6px 14px rgba(37,99,235,0.25);
+      box-shadow: 0 6px 14px var(--ball-shadow);
+      transition: transform 0.2s ease;
     }
+
+    .ball:hover {
+      transform: scale(1.05);
+    }
+
+    .control-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
     button {
       border: none;
-      background: #0f172a;
-      color: white;
+      background: var(--button-bg);
+      color: var(--text-primary);
       padding: 12px 18px;
       font-size: 1rem;
       border-radius: 10px;
       cursor: pointer;
+      transition: all 0.3s ease;
     }
+
     button:hover {
       opacity: 0.92;
+      transform: translateY(-2px);
+    }
+
+    html.dark-mode button {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
   </style>
 </head>
 <body>
+  <button class="theme-toggle" id="themeToggle" title="테마 전환">🌙</button>
+  
   <div class="card">
     <h1>행운의 숫자 5개</h1>
     <p>버튼을 누를 때마다 1부터 45 사이의 숫자 5개를 무작위로 보여줍니다.</p>
     <div class="numbers" id="numbers"></div>
-    <button onclick="generateNumbers()">다시 뽑기</button>
+    <div class="control-buttons">
+      <button onclick="generateNumbers()">다시 뽑기</button>
+    </div>
   </div>
 
   <script>
+    // 테마 초기화
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      const isDarkMode = savedTheme === 'dark';
+      
+      if (isDarkMode) {
+        document.documentElement.classList.add('dark-mode');
+        document.getElementById('themeToggle').textContent = '☀️';
+      } else {
+        document.documentElement.classList.remove('dark-mode');
+        document.getElementById('themeToggle').textContent = '🌙';
+      }
+    }
+
+    // 테마 토글
+    document.getElementById('themeToggle').addEventListener('click', function() {
+      const isDarkMode = document.documentElement.classList.toggle('dark-mode');
+      localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+      this.textContent = isDarkMode ? '☀️' : '🌙';
+    });
+
+    // 숫자 생성 함수
     function generateNumbers() {
       const picked = new Set();
       while (picked.size < 5) {
@@ -93,6 +197,8 @@
       });
     }
 
+    // 페이지 로드 시 실행
+    initTheme();
     generateNumbers();
   </script>
 </body>
