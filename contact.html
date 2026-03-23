@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>제휴 문의 - 행운의 숫자 5개</title>
+  <style>
+    :root {
+      --bg-gradient-1: #f8fafc;
+      --bg-gradient-2: #e2e8f0;
+      --card-bg: white;
+      --card-shadow: rgba(0,0,0,0.12);
+      --text-primary: #1e293b;
+      --text-secondary: #475569;
+      --button-bg: #0f172a;
+      --input-border: #cbd5e1;
+      --input-focus: #2563eb;
+      --ball-shadow: rgba(37,99,235,0.25);
+    }
+
+    html.dark-mode {
+      --bg-gradient-1: #0f172a;
+      --bg-gradient-2: #1e293b;
+      --card-bg: #1e293b;
+      --card-shadow: rgba(0,0,0,0.5);
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --button-bg: #f1f5f9;
+      --input-border: #475569;
+      --input-focus: #3b82f6;
+      --ball-shadow: rgba(37,99,235,0.4);
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, var(--bg-gradient-1), var(--bg-gradient-2));
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      transition: background 0.3s ease;
+      color: var(--text-primary);
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      border: none;
+      background: var(--button-bg);
+      color: var(--text-primary);
+      padding: 10px 15px;
+      font-size: 1rem;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+      opacity: 0.8;
+    }
+
+    .back-link {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: var(--input-focus);
+      text-decoration: none;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+      opacity: 0.8;
+      text-decoration: underline;
+    }
+
+    .card {
+      background: var(--card-bg);
+      padding: 32px;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px var(--card-shadow);
+      width: min(90vw, 600px);
+      transition: all 0.3s ease;
+    }
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-size: 2rem;
+      color: var(--text-primary);
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      font-size: 0.95rem;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid var(--input-border);
+      border-radius: 8px;
+      font-family: Arial, sans-serif;
+      font-size: 1rem;
+      background: var(--card-bg);
+      color: var(--text-primary);
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--input-focus);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: var(--text-secondary);
+      opacity: 0.7;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(37, 99, 235, 0.4);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .success-message {
+      display: none;
+      background: #dcfce7;
+      color: #166534;
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 16px;
+      text-align: center;
+      animation: slideIn 0.3s ease;
+    }
+
+    .success-message.show {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    html.dark-mode .success-message {
+      background: #1b4332;
+      color: #d1fae5;
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-link">← 돌아가기</a>
+  <button class="theme-toggle" id="themeToggle" title="테마 전환">🌙</button>
+
+  <div class="card">
+    <h1>제휴 문의</h1>
+    <p class="subtitle">행운의 숫자 5개와의 협력 기회에 대해 연락 주세요.</p>
+
+    <form id="contactForm" action="https://formspree.io/f/xpqygorw" method="POST">
+      <div class="form-group">
+        <label for="name">이름 *</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="이름을 입력해주세요"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="email">이메일 *</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="이메일 주소를 입력해주세요"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="phone">연락처 (선택사항)</label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          placeholder="전화번호를 입력해주세요"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="company">회사명 (선택사항)</label>
+        <input
+          type="text"
+          id="company"
+          name="company"
+          placeholder="회사명을 입력해주세요"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="message">문의 내용 *</label>
+        <textarea
+          id="message"
+          name="message"
+          placeholder="제휴 관련 문의 내용을 자세히 입력해주세요"
+          required
+        ></textarea>
+      </div>
+
+      <button type="submit">문의 보내기</button>
+      <div id="successMessage" class="success-message">
+        ✓ 문의가 성공적으로 전송되었습니다. 빠른 시일 내에 연락드리겠습니다.
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // 테마 초기화
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      const isDarkMode = savedTheme === 'dark';
+
+      if (isDarkMode) {
+        document.documentElement.classList.add('dark-mode');
+        document.getElementById('themeToggle').textContent = '☀️';
+      } else {
+        document.documentElement.classList.remove('dark-mode');
+        document.getElementById('themeToggle').textContent = '🌙';
+      }
+    }
+
+    // 테마 토글
+    document.getElementById('themeToggle').addEventListener('click', function () {
+      const isDarkMode = document.documentElement.classList.toggle('dark-mode');
+      localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+      this.textContent = isDarkMode ? '☀️' : '🌙';
+    });
+
+    // 폼 제출 처리
+    document.getElementById('contactForm').addEventListener('submit', function (e) {
+      if (e.target.method !== 'POST') {
+        e.preventDefault();
+        // 성공 메시지 표시
+        document.getElementById('successMessage').classList.add('show');
+        // 3초 후 폼 초기화
+        setTimeout(() => {
+          this.reset();
+          document.getElementById('successMessage').classList.remove('show');
+        }, 3000);
+      }
+    });
+
+    // 페이지 로드 시 테마 초기화
+    initTheme();
+  </script>
+</body>
+</html>
